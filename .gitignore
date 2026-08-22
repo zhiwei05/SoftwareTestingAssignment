@@ -1,0 +1,29 @@
+# ── Java compiled output ────────────────────────────────────
+*.class
+bin/
+out/
+build/
+
+# ── JAR files (do NOT commit — assignment requirement) ──────
+*.jar
+
+# ── Eclipse project files ───────────────────────────────────
+.classpath
+.project
+.settings/
+
+# ── IntelliJ IDEA project files ─────────────────────────────
+.idea/
+*.iml
+
+# ── macOS system files ───────────────────────────────────────
+.DS_Store
+__MACOSX/
+
+# ── Windows system files ────────────────────────────────────
+Thumbs.db
+desktop.ini
+
+# ── Temporary test files (created and deleted by tests) ─────
+test_*.txt
+test_*.csv
