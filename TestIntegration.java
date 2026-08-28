@@ -39,17 +39,16 @@ public class TestIntegration {
         //   Student 10%: 298.00 × 0.90 = 268.20
         //   Final:      268.20
 
-        // TODO [Member 4]:
-        //   printerAvailability mockPrinter = Mockito.mock(printerAvailability.class);
-        //   when(mockPrinter.isPrinterAvailable(anyString(), anyString())).thenReturn(true);
-        //   applyDiscount realDiscount = new applyDiscount();          ← REAL, not mocked
-        //   calculatePrintingCharge cpc = new calculatePrintingCharge(mockPrinter, realDiscount);
-        //
-        //   customer c = new customer("C001","Ali","ali@t.com","012","Student",5);
-        //   printOrder order = new printOrder(c,"Colour","A3","Double-sided",50,2,"Spiral",true,false);
-        //
-        //   double result = cpc.calculateTotalCharge(order);
-        //   assertEquals(268.20, result, 0.01);
+        printerAvailability mockPrinter = Mockito.mock(printerAvailability.class);
+        when(mockPrinter.isPrinterAvailable(anyString(), anyString())).thenReturn(true);
+        applyDiscount realDiscount = new applyDiscount();
+        calculatePrintingCharge cpc = new calculatePrintingCharge(mockPrinter, realDiscount);
+
+        customer c = new customer("C001","Ali","ali@t.com","012","Student",5);
+        printOrder order = new printOrder(c,"Colour","A3","Double-sided",50,2,"Spiral",true,false);
+
+        double result = cpc.calculateTotalCharge(order);
+        assertEquals(268.20, result, 0.01);
     }
 
     // ── INTEGRATION TEST 2 ────────────────────────────────────
@@ -69,18 +68,18 @@ public class TestIntegration {
         // This tests that writing a customer to file and reading it back
         // produces an identical customer object.
         //
-        // TODO [Member 4]:
-        //   addNewCustomer adder   = new addNewCustomer(INT_TEST_FILE);  ← REAL
-        //   readCustomer   reader  = new readCustomer(INT_TEST_FILE);    ← REAL
-        //
-        //   customer original = new customer("C100","Siti","siti@t.com","019","Corporate",10);
-        //   adder.addCustomer(original);
-        //
-        //   customer retrieved = reader.getCustomer("C100");
-        //   assertNotNull(retrieved);
-        //   assertEquals("Siti",      retrieved.getName());
-        //   assertEquals("Corporate", retrieved.getCustomerType());
-        //   assertEquals(10,           retrieved.getPreviousOrders());
+        new File(INT_TEST_FILE).delete();
+        addNewCustomer adder = new addNewCustomer(INT_TEST_FILE);
+        readCustomer reader = new readCustomer(INT_TEST_FILE);
+
+        customer original = new customer("C100","Siti","siti@t.com","019","Corporate",10);
+        adder.addCustomer(original);
+
+        customer retrieved = reader.getCustomer("C100");
+        assertNotNull(retrieved);
+        assertEquals("Siti", retrieved.getName());
+        assertEquals("Corporate", retrieved.getCustomerType());
+        assertEquals(10, retrieved.getPreviousOrders());
     }
 
     // ── INTEGRATION TEST 3 ────────────────────────────────────
@@ -92,24 +91,22 @@ public class TestIntegration {
         // This tests the full order processing pipeline:
         // calculate charge → store results in printOrder → generate invoice
 
-        // TODO [Member 4]:
-        //   printerAvailability mockPrinter = Mockito.mock(printerAvailability.class);
-        //   when(mockPrinter.isPrinterAvailable(anyString(), anyString())).thenReturn(true);
-        //   calculatePrintingCharge cpc = new calculatePrintingCharge(mockPrinter, new applyDiscount());
-        //   generateInvoice gen = new generateInvoice();   ← REAL
-        //
-        //   customer c = new customer("C002","Raj","raj@t.com","011","Regular",0);
-        //   printOrder order = new printOrder(c,"Black & White","A4","Single-sided",10,1,"None",false,false);
-        //
-        //   cpc.calculateTotalCharge(order);   // populates order's charge fields
-        //   String invoice = gen.generate(order);
-        //
-        //   // Verify invoice contains key content
-        //   assertNotNull(invoice);
-        //   assertTrue(invoice.contains("Raj"));
-        //   assertTrue(invoice.contains("C002"));
-        //   assertTrue(invoice.contains("A4"));
-        //   assertTrue(invoice.contains("RM2.00"));   // 10 × 1 × 0.20 = 2.00
+        printerAvailability mockPrinter = Mockito.mock(printerAvailability.class);
+        when(mockPrinter.isPrinterAvailable(anyString(), anyString())).thenReturn(true);
+        calculatePrintingCharge cpc = new calculatePrintingCharge(mockPrinter, new applyDiscount());
+        generateInvoice gen = new generateInvoice();
+
+        customer c = new customer("C002","Raj","raj@t.com","011","Regular",0);
+        printOrder order = new printOrder(c,"Black & White","A4","Single-sided",10,1,"None",false,false);
+
+        cpc.calculateTotalCharge(order);
+        String invoice = gen.generate(order);
+
+        assertNotNull(invoice);
+        assertTrue(invoice.contains("Raj"));
+        assertTrue(invoice.contains("C002"));
+        assertTrue(invoice.contains("A4"));
+        assertTrue(invoice.contains("RM 2.00"));
     }
 
     // ── INTEGRATION TEST 4 (optional bonus) ───────────────────
@@ -118,10 +115,14 @@ public class TestIntegration {
     // TC reference: TC_Int_004
     @Test
     public void testIntegration_loyaltyDiscount_appliedForOver20Orders() {
-        // TODO [Member 4]:
-        //   Create a Regular customer with previousOrders = 21 (> 20)
-        //   Use an order where subtotal <= 300 (only loyalty discount applies)
-        //   Verify total = subtotal × 0.95
+        printerAvailability mockPrinter = Mockito.mock(printerAvailability.class);
+        when(mockPrinter.isPrinterAvailable(anyString(), anyString())).thenReturn(true);
+        calculatePrintingCharge cpc = new calculatePrintingCharge(mockPrinter, new applyDiscount());
+
+        customer c = new customer("C003","Lee","lee@t.com","013","Regular",21);
+        printOrder order = new printOrder(c,"Black & White","A4","Single-sided",10,1,"None",false,false);
+
+        assertEquals(1.90, cpc.calculateTotalCharge(order), 0.01);
     }
 
 }

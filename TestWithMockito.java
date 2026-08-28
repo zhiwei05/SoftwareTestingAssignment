@@ -40,15 +40,14 @@ public class TestWithMockito {
     @Test
     public void testMock_printerAvailable_chargeCalculatedCorrectly() {
         // Stub: printer returns true for A4, B&W
-        // when(mockPrinter.isPrinterAvailable("A4", "Black & White")).thenReturn(true);
-        //
-        // TODO [Member 4]:
-        //   1. Stub the mock
-        //   2. Create customer and printOrder
-        //   3. Call cpc.calculateTotalCharge(order)
-        //   4. assertEquals(expected, result, 0.01)
-        //   5. verify(mockPrinter).isPrinterAvailable("A4", "Black & White")
-        //      ↑ This confirms the method was actually called during execution
+        when(mockPrinter.isPrinterAvailable("A4", "Black & White")).thenReturn(true);
+
+        customer c = new customer("C001","Test","t@t.com","012","Regular",0);
+        printOrder order = new printOrder(c, "Black & White", "A4", "Single-sided", 10, 1, "None", false, false);
+        double result = cpc.calculateTotalCharge(order);
+
+        assertEquals(2.00, result, 0.01);
+        verify(mockPrinter).isPrinterAvailable("A4", "Black & White");
     }
 
     // ── Test: Printer UNAVAILABLE → returns -1, no charge ────
@@ -56,14 +55,13 @@ public class TestWithMockito {
     @Test
     public void testMock_printerUnavailable_returnsNegativeOne() {
         // Stub: printer returns false for A3, Colour
-        // when(mockPrinter.isPrinterAvailable("A3", "Colour")).thenReturn(false);
-        //
-        // TODO [Member 4]:
-        //   1. Stub the mock to return false
-        //   2. Create order with A3, Colour
-        //   3. Call calculateTotalCharge
-        //   4. assertEquals(-1.0, result, 0.001)
-        //      ↑ -1.0 is the sentinel value indicating printer is unavailable
+        when(mockPrinter.isPrinterAvailable("A3", "Colour")).thenReturn(false);
+
+        customer c = new customer("C001","Test","t@t.com","012","Regular",0);
+        printOrder order = new printOrder(c, "Colour", "A3", "Single-sided", 10, 1, "None", false, false);
+        double result = cpc.calculateTotalCharge(order);
+
+        assertEquals(-1.0, result, 0.001);
     }
 
     // ── Test: Verify mock is called with correct arguments ────
@@ -73,12 +71,13 @@ public class TestWithMockito {
         // This test verifies that calculatePrintingCharge passes the
         // correct paperSize and printType to printerAvailability
         //
-        // TODO [Member 4]:
-        //   when(mockPrinter.isPrinterAvailable("A5", "Colour")).thenReturn(true);
-        //   ... create order with A5, Colour ...
-        //   cpc.calculateTotalCharge(order);
-        //   verify(mockPrinter, times(1)).isPrinterAvailable("A5", "Colour");
-        //   ↑ Confirm the mock was called EXACTLY ONCE with the right arguments
+        when(mockPrinter.isPrinterAvailable("A5", "Colour")).thenReturn(true);
+        customer c = new customer("C001","Test","t@t.com","012","Regular",0);
+        printOrder order = new printOrder(c, "Colour", "A5", "Single-sided", 10, 1, "None", false, false);
+
+        cpc.calculateTotalCharge(order);
+
+        verify(mockPrinter, times(1)).isPrinterAvailable("A5", "Colour");
     }
 
     // ── Parameterised: Different paper/type combinations ──────
@@ -93,12 +92,16 @@ public class TestWithMockito {
     public void testMock_differentPrinterResponses_parameterised(
             String paper, String type, boolean available) {
         // EP: Test mock behavior for each paper/type combination
-        // TODO [Member 4]:
-        //   when(mockPrinter.isPrinterAvailable(paper, type)).thenReturn(available);
-        //   ... create order ...
-        //   double result = cpc.calculateTotalCharge(order);
-        //   if (available) { assertTrue(result > 0); }
-        //   else           { assertEquals(-1.0, result, 0.001); }
+        when(mockPrinter.isPrinterAvailable(paper, type)).thenReturn(available);
+        customer c = new customer("C001","Test","t@t.com","012","Regular",0);
+        printOrder order = new printOrder(c, type, paper, "Single-sided", 10, 1, "None", false, false);
+        double result = cpc.calculateTotalCharge(order);
+
+        if (available) {
+            assertTrue(result > 0);
+        } else {
+            assertEquals(-1.0, result, 0.001);
+        }
     }
 
 }

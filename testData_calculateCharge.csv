@@ -15,6 +15,14 @@ A5,Black & White,Single-sided,100,1,Staple,false,false,Corporate,25,13.70
 # Row 4: A4 Colour Single + Express, Regular, no discount → 10×5×0.80+20=60.00
 A4,Colour,Single-sided,10,5,None,false,true,Regular,0,60.00
 #
-# TODO [Member 4]: Add at least 4 more rows covering different scenarios
-# from your Decision Table and EP/BVA tables. Each row should map to
-# a test case in your TestCase.xlsx document.
+# Row 5: BVA max pages, A4 B&W Double, Regular exactly 20 previous orders → no loyalty
+A4,Black & White,Double-sided,500,1,None,false,false,Regular,20,90.00
+#
+# Row 6: A4 Colour Double + Comb, Regular with >RM300 and loyalty discounts
+A4,Colour,Double-sided,500,1,Comb,false,false,Regular,21,342.95
+#
+# Row 7: A5 Colour Single, Student with loyalty discount
+A5,Colour,Single-sided,10,10,None,false,false,Student,21,51.30
+#
+# Row 8: A3 B&W Double + Comb + Lamination + Express, Corporate with all extra discounts
+A3,Black & White,Double-sided,100,3,Comb,true,true,Corporate,30,444.93
