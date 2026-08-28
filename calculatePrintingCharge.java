@@ -70,6 +70,9 @@ public class calculatePrintingCharge {
         if (pages < 1 || copies < 1) {
             throw new IllegalArgumentException("Pages and copies must be positive");
         }
+        if (!"Single-sided".equals(printingSide) && !"Double-sided".equals(printingSide)) {
+            throw new IllegalArgumentException("Invalid printing side: " + printingSide);
+        }
 
         double rate;
         if ("A4".equals(paperSize) && "Black & White".equals(printType)) {
@@ -86,10 +89,6 @@ public class calculatePrintingCharge {
             rate = "Single-sided".equals(printingSide) ? 0.60 : 0.55;
         } else {
             throw new IllegalArgumentException("Invalid paper size or print type");
-        }
-
-        if (!"Single-sided".equals(printingSide) && !"Double-sided".equals(printingSide)) {
-            throw new IllegalArgumentException("Invalid printing side: " + printingSide);
         }
 
         return rate * pages * copies;

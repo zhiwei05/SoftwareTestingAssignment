@@ -93,8 +93,15 @@ public class TestCustomerFileIO {
         // Should throw IllegalArgumentException
     }
 
-    // ── BVA: previousOrders boundary — exactly 20 (no loyalty discount) ─
+    // ── EP Invalid: comma in field would corrupt CSV format ───
     // TC reference: TC_FileIO_006
+    @Test(expected = IllegalArgumentException.class)
+    public void testCustomerConstructor_commaInName_throwsException() {
+        new customer("C999", "Test, User", "t@t.com", "0100000000", "Regular", 0);
+    }
+
+    // ── BVA: previousOrders boundary — exactly 20 (no loyalty discount) ─
+    // TC reference: TC_FileIO_007
     @Test
     public void testCustomerPreviousOrders_exactly20_noLoyaltyDiscount() {
         customer c = new customer("C020", "Test", "t@t.com", "0100000000", "Regular", 20);
@@ -104,7 +111,7 @@ public class TestCustomerFileIO {
 
     // ── Parameterised: Multiple valid customer types ──────────
     // EP: All valid customer types should be accepted
-    // TC reference: TC_FileIO_007
+    // TC reference: TC_FileIO_008
     @Test
     @Parameters({"Regular", "Student", "Corporate"})
     public void testCustomerConstructor_validTypes_noException(String customerType) {
