@@ -66,8 +66,39 @@ public class printOrder {
                       String printingSide, int numberOfPages, int numberOfCopies,
                       String bindingOption, boolean lamination, boolean expressPrinting)
                       throws IllegalArgumentException {
-        // TODO [Member 3]: Validate all inputs, then assign all fields
-        // TODO [Member 3]: Set orderStatus = "Pending" by default
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer cannot be null");
+        }
+        if (numberOfPages < 1 || numberOfPages > 500) {
+            throw new IllegalArgumentException("Number of pages must be from 1 to 500");
+        }
+        if (numberOfCopies < 1 || numberOfCopies > 1000) {
+            throw new IllegalArgumentException("Number of copies must be from 1 to 1000");
+        }
+        if (!"Black & White".equals(printType) && !"Colour".equals(printType)) {
+            throw new IllegalArgumentException("Invalid print type: " + printType);
+        }
+        if (!"A3".equals(paperSize) && !"A4".equals(paperSize) && !"A5".equals(paperSize)) {
+            throw new IllegalArgumentException("Invalid paper size: " + paperSize);
+        }
+        if (!"Single-sided".equals(printingSide) && !"Double-sided".equals(printingSide)) {
+            throw new IllegalArgumentException("Invalid printing side: " + printingSide);
+        }
+        if (!"None".equals(bindingOption) && !"Staple".equals(bindingOption)
+                && !"Comb".equals(bindingOption) && !"Spiral".equals(bindingOption)) {
+            throw new IllegalArgumentException("Invalid binding option: " + bindingOption);
+        }
+
+        this.customer = customer;
+        this.printType = printType;
+        this.paperSize = paperSize;
+        this.printingSide = printingSide;
+        this.numberOfPages = numberOfPages;
+        this.numberOfCopies = numberOfCopies;
+        this.bindingOption = bindingOption;
+        this.lamination = lamination;
+        this.expressPrinting = expressPrinting;
+        this.orderStatus = "Pending";
     }
 
     // ── GETTERS (for all input fields) ───────────────────────
@@ -75,34 +106,34 @@ public class printOrder {
     //   NOTE: Member 4's generateInvoice.java calls all of these.
     //   Do NOT change method names — Member 4 will code against these signatures.
 
-    public customer getCustomer()      { /* TODO [Member 3] */ return null; }
-    public String getPrintType()       { /* TODO [Member 3] */ return null; }
-    public String getPaperSize()       { /* TODO [Member 3] */ return null; }
-    public String getPrintingSide()    { /* TODO [Member 3] */ return null; }
-    public int getNumberOfPages()      { /* TODO [Member 3] */ return 0; }
-    public int getNumberOfCopies()     { /* TODO [Member 3] */ return 0; }
-    public String getBindingOption()   { /* TODO [Member 3] */ return null; }
-    public boolean isLamination()      { /* TODO [Member 3] */ return false; }
-    public boolean isExpressPrinting() { /* TODO [Member 3] */ return false; }
+    public customer getCustomer()      { return customer; }
+    public String getPrintType()       { return printType; }
+    public String getPaperSize()       { return paperSize; }
+    public String getPrintingSide()    { return printingSide; }
+    public int getNumberOfPages()      { return numberOfPages; }
+    public int getNumberOfCopies()     { return numberOfCopies; }
+    public String getBindingOption()   { return bindingOption; }
+    public boolean isLamination()      { return lamination; }
+    public boolean isExpressPrinting() { return expressPrinting; }
 
     // ── GETTERS & SETTERS (for computed output fields) ───────
     // TODO [Member 3]: Implement getters AND setters for all output fields.
     //   Setters are called by calculatePrintingCharge.java (Member 3)
     //   and the values are read by generateInvoice.java (Member 4).
 
-    public double getBaseCharge()             { /* TODO [Member 3] */ return 0.0; }
-    public void   setBaseCharge(double v)     { /* TODO [Member 3] */ }
+    public double getBaseCharge()             { return baseCharge; }
+    public void   setBaseCharge(double v)     { baseCharge = v; }
 
-    public double getOptionalServiceCharge()          { /* TODO [Member 3] */ return 0.0; }
-    public void   setOptionalServiceCharge(double v)  { /* TODO [Member 3] */ }
+    public double getOptionalServiceCharge()          { return optionalServiceCharge; }
+    public void   setOptionalServiceCharge(double v)  { optionalServiceCharge = v; }
 
-    public double getDiscountAmount()          { /* TODO [Member 3] */ return 0.0; }
-    public void   setDiscountAmount(double v)  { /* TODO [Member 3] */ }
+    public double getDiscountAmount()          { return discountAmount; }
+    public void   setDiscountAmount(double v)  { discountAmount = v; }
 
-    public double getTotalCharge()          { /* TODO [Member 3] */ return 0.0; }
-    public void   setTotalCharge(double v)  { /* TODO [Member 3] */ }
+    public double getTotalCharge()          { return totalCharge; }
+    public void   setTotalCharge(double v)  { totalCharge = v; }
 
-    public String getOrderStatus()           { /* TODO [Member 3] */ return null; }
-    public void   setOrderStatus(String s)   { /* TODO [Member 3] */ }
+    public String getOrderStatus()           { return orderStatus; }
+    public void   setOrderStatus(String s)   { orderStatus = s; }
 
 }

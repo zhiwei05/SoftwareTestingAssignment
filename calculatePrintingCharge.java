@@ -37,7 +37,11 @@ public class calculatePrintingCharge {
     //     calculatePrintingCharge cpc = new calculatePrintingCharge(mockPrinter, realDiscount);
     public calculatePrintingCharge(printerAvailability printerService,
                                     applyDiscount discountService) {
-        // TODO [Member 3]: Assign both fields
+        if (printerService == null || discountService == null) {
+            throw new IllegalArgumentException("Dependencies cannot be null");
+        }
+        this.printerService = printerService;
+        this.discountService = discountService;
     }
 
     // ── METHOD: calculateBaseCharge ───────────────────────────
@@ -63,9 +67,31 @@ public class calculatePrintingCharge {
     //   AND directly (invalid paperSize strings).
     public double calculateBaseCharge(String paperSize, String printType,
                                        String printingSide, int pages, int copies) {
-        // TODO [Member 3]: Look up the correct base rate
-        // TODO [Member 3]: Return rate × pages × copies
-        return 0.0;
+        if (pages < 1 || copies < 1) {
+            throw new IllegalArgumentException("Pages and copies must be positive");
+        }
+        if (!"Single-sided".equals(printingSide) && !"Double-sided".equals(printingSide)) {
+            throw new IllegalArgumentException("Invalid printing side: " + printingSide);
+        }
+
+        double rate;
+        if ("A4".equals(paperSize) && "Black & White".equals(printType)) {
+            rate = "Single-sided".equals(printingSide) ? 0.20 : 0.18;
+        } else if ("A4".equals(paperSize) && "Colour".equals(printType)) {
+            rate = "Single-sided".equals(printingSide) ? 0.80 : 0.75;
+        } else if ("A3".equals(paperSize) && "Black & White".equals(printType)) {
+            rate = "Single-sided".equals(printingSide) ? 0.40 : 0.35;
+        } else if ("A3".equals(paperSize) && "Colour".equals(printType)) {
+            rate = "Single-sided".equals(printingSide) ? 1.50 : 1.40;
+        } else if ("A5".equals(paperSize) && "Black & White".equals(printType)) {
+            rate = "Single-sided".equals(printingSide) ? 0.15 : 0.13;
+        } else if ("A5".equals(paperSize) && "Colour".equals(printType)) {
+            rate = "Single-sided".equals(printingSide) ? 0.60 : 0.55;
+        } else {
+            throw new IllegalArgumentException("Invalid paper size or print type");
+        }
+
+        return rate * pages * copies;
     }
 
     // ── METHOD: calculateOptionalServiceCharge ────────────────
@@ -87,10 +113,31 @@ public class calculatePrintingCharge {
                                                   boolean lamination,
                                                   boolean expressPrinting,
                                                   int pages, int copies) {
-        // TODO [Member 3]: Add binding charge
-        // TODO [Member 3]: Add lamination charge (if applicable)
-        // TODO [Member 3]: Add express printing charge (if applicable)
-        return 0.0;
+        if (pages < 1 || copies < 1) {
+            throw new IllegalArgumentException("Pages and copies must be positive");
+        }
+
+        double charge;
+        if ("None".equals(bindingOption)) {
+            charge = 0.0;
+        } else if ("Staple".equals(bindingOption)) {
+            charge = 2.0;
+        } else if ("Comb".equals(bindingOption)) {
+            charge = 5.0;
+        } else if ("Spiral".equals(bindingOption)) {
+            charge = 8.0;
+        } else {
+            throw new IllegalArgumentException("Invalid binding option: " + bindingOption);
+        }
+
+        if (lamination) {
+            charge += 1.50 * pages * copies;
+        }
+        if (expressPrinting) {
+            charge += 20.0;
+        }
+
+        return charge;
     }
 
     // ── METHOD: calculateTotalCharge ──────────────────────────
@@ -120,8 +167,48 @@ public class calculatePrintingCharge {
     //     Mockito.when(mockPrinter.isPrinterAvailable("A4","Colour")).thenReturn(true/false)
     //   and then verify the return value of this method matches your expectation.
     public double calculateTotalCharge(printOrder order) {
-        // TODO [Member 3]: Implement full pipeline here
-        return 0.0;
+        if (order == null) {
+            throw new IllegalArgumentException("Order cannot be null");
+        }
+
+        if (!printerService.isPrinterAvailable(order.getPaperSize(), order.getPrintType())) {
+            System.out.println("Selected printer is currently unavailable.");
+            return -1.0;
+        }
+
+        double baseCharge = calculateBaseCharge(
+                order.getPaperSize(),
+                order.getPrintType(),
+                order.getPrintingSide(),
+                order.getNumberOfPages(),
+                order.getNumberOfCopies());
+        double optionalServiceCharge = calculateOptionalServiceCharge(
+                order.getBindingOption(),
+                order.isLamination(),
+                order.isExpressPrinting(),
+                order.getNumberOfPages(),
+                order.getNumberOfCopies());
+        double subtotal = roundToTwoDecimals(baseCharge + optionalServiceCharge);
+        boolean orderExceedsRM300 = subtotal > 300.0;
+        boolean existingOver20Orders = order.getCustomer().getPreviousOrders() > 20;
+
+        double finalCharge = discountService.applyDiscount(
+                order.getCustomer().getCustomerType(),
+                subtotal,
+                orderExceedsRM300,
+                existingOver20Orders);
+        double discountAmount = roundToTwoDecimals(subtotal - finalCharge);
+
+        order.setBaseCharge(baseCharge);
+        order.setOptionalServiceCharge(optionalServiceCharge);
+        order.setDiscountAmount(discountAmount);
+        order.setTotalCharge(finalCharge);
+
+        return finalCharge;
+    }
+
+    private double roundToTwoDecimals(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 
 }

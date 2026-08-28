@@ -76,10 +76,25 @@ public class TestFromExternalFile {
             String[] parts = line.split(",");
             lineNum++;
 
-            // TODO [Member 4]: Parse each part and cast to the correct type
-            // TODO [Member 4]: Build customer object
-            // TODO [Member 4]: Build printOrder object
-            // TODO [Member 4]: Call calculateTotalCharge and assertEquals
+            String paperSize = parts[0].trim();
+            String printType = parts[1].trim();
+            String printingSide = parts[2].trim();
+            int pages = Integer.parseInt(parts[3].trim());
+            int copies = Integer.parseInt(parts[4].trim());
+            String bindingOption = parts[5].trim();
+            boolean lamination = Boolean.parseBoolean(parts[6].trim());
+            boolean expressPrinting = Boolean.parseBoolean(parts[7].trim());
+            String customerType = parts[8].trim();
+            int previousOrders = Integer.parseInt(parts[9].trim());
+            double expectedTotal = Double.parseDouble(parts[10].trim());
+
+            customer c = new customer("CSV" + lineNum, "CSV Customer",
+                    "csv@test.com", "010", customerType, previousOrders);
+            printOrder order = new printOrder(c, printType, paperSize, printingSide,
+                    pages, copies, bindingOption, lamination, expressPrinting);
+            double result = cpc.calculateTotalCharge(order);
+
+            assertEquals("Failed on: " + line, expectedTotal, result, 0.01);
         }
 
         br.close();
