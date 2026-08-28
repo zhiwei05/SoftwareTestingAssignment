@@ -119,7 +119,7 @@ public class TestCustomerFileIO {
         // TODO [Member 1]: Create customer with type "VIP" (invalid)
         // new customer("C999", "Test", "t@t.com", "0100000000", "VIP", 0)
         // Should throw IllegalArgumentException
-        new customer("C999", "David", "david@test.com", "017654", "VIP", 0
+        new customer("C999", "David", "david@test.com", "017654", "VIP", 0);
     }
 
     // ── BVA: previousOrders boundary — exactly 20 (no loyalty discount) ─
