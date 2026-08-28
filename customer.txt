@@ -3,6 +3,6 @@
 # Member 1 owns this file. Other members should not modify it.
 C001,Yi Xiao,yixiao@test.com,012345,Student,7
 C002,Ali Lim,alilim@test.com,016789,Regular,21
-C003,John Doe,john@email.com,0111234567,Regular,3
-C004,Raj Kumar,raj@email.com,0167890123,Student,12
-C005,Lee Wei Ling,lee@corp.com,0145678901,Corporate,8
+C003,John Doe,john@email.com,011123,Regular,3
+C004,Raj Kumar,rajk@email.com,016789,Student,12
+C005,Lee Wei Ling,leewl@corp.com,014567,Corporate,8
