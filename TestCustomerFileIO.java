@@ -98,13 +98,13 @@ public class TestCustomerFileIO {
         // 3. Call reader.getCustomer(newCustomer.getCustomerID())
         // 4. assertNotNull(result)
         // 5. assertEquals(newCustomer.getName(), result.getName())
-        customer newCustomer = new customer("C003", "Bell", "bell@test.com", "012468", "Corporate", 0);
+        customer newCustomer = new customer("C006", "Bell", "bell@test.com", "012468", "Corporate", 0);
 
         adder.addCustomer(newCustomer);
-        customer result = reader.getCustomer("C003");
+        customer result = reader.getCustomer("C006");
 
         assertNotNull(result);
-        assertEquals("C003", result.getCustomerID());
+        assertEquals("C006", result.getCustomerID());
         assertEquals("Bell", result.getName());
         assertEquals("bell@test.com", result.getEmail());
         assertEquals("012468", result.getPhone());
