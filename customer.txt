@@ -2,7 +2,7 @@
 # DO NOT DELETE THIS FILE — it must stay in the project root directory
 # Member 1 owns this file. Other members should not modify it.
 C001,Yi Xiao,yixiao@test.com,012345,Student,7
-C002,Siti Binti Ahmad,siti@corp.com,0198765432,Corporate,25
+C002,Ali Lim,alilim@test.com,016789,Regular,21
 C003,John Doe,john@email.com,0111234567,Regular,3
 C004,Raj Kumar,raj@email.com,0167890123,Student,12
 C005,Lee Wei Ling,lee@corp.com,0145678901,Corporate,8
