@@ -34,7 +34,17 @@ public class customer {
                     String phone, String customerType, int previousOrders) {
         // TODO [Member 1]: Validate customerType here
         // TODO [Member 1]: Assign all fields here
+        if (!"Regular".equals(customerType) && !"Student".equals(customerType)
+                && !"Corporate".equals(customerType)) {
+            throw new IllegalArgumentException("Invalid customer type");
     }
+        this.customerID = customerID;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.customerType = customerType;
+        this.previousOrders = previousOrders;
+ }
 
     // ── GETTERS ──────────────────────────────────────────────
     // TODO [Member 1]: Implement a getter for every field.
@@ -44,36 +54,36 @@ public class customer {
 
     public String getCustomerID() {
         // TODO [Member 1]: return customerID
-        return null;
+        return customerID;
     }
 
     public String getName() {
         // TODO [Member 1]: return name
-        return null;
+        return name;
     }
 
     public String getEmail() {
         // TODO [Member 1]: return email
-        return null;
+        return email;
     }
 
     public String getPhone() {
         // TODO [Member 1]: return phone
-        return null;
+        return phone;
     }
 
     public String getCustomerType() {
         // TODO [Member 1]: return customerType
         // NOTE TO MEMBER 2: applyDiscount.java reads this value to determine
         // which discount to apply. It expects exactly: "Regular", "Student", "Corporate"
-        return null;
+        return customerType;
     }
 
     public int getPreviousOrders() {
         // TODO [Member 1]: return previousOrders
         // NOTE TO MEMBER 4 (TestIntegration): this value drives the loyalty discount.
         // A value > 20 triggers an additional 5% discount.
-        return 0;
+        return previoussOrders;
     }
 
     // ── toString (optional but useful for debugging) ─────────
@@ -82,7 +92,7 @@ public class customer {
     @Override
     public String toString() {
         // TODO [Member 1]: Implement this
-        return "";
+        return "Customer[ID=" + customerID + ", Name=" + name+ ", Type=" + customerType + ", Orders=" + previousOrders + "]";
     }
 
 }
