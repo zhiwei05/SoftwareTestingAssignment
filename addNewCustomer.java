@@ -48,6 +48,11 @@ public class addNewCustomer {
         if (c == null) {
             throw new IllegalArgumentException("Customer cannot be null");
         }
+        validateCsvField("customerID", c.getCustomerID());
+        validateCsvField("name", c.getName());
+        validateCsvField("email", c.getEmail());
+        validateCsvField("phone", c.getPhone());
+        validateCsvField("customerType", c.getCustomerType());
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.write(c.getCustomerID() + ","
@@ -57,6 +62,15 @@ public class addNewCustomer {
                     + c.getCustomerType() + ","
                     + c.getPreviousOrders());
             writer.newLine();
+        }
+    }
+
+    private void validateCsvField(String fieldName, String value) {
+        if (value == null) {
+            throw new IllegalArgumentException(fieldName + " cannot be null");
+        }
+        if (value.contains(",")) {
+            throw new IllegalArgumentException(fieldName + " cannot contain commas");
         }
     }
 

@@ -32,11 +32,6 @@ public class customer {
     //   or "Corporate", throw an IllegalArgumentException.
     public customer(String customerID, String name, String email,
                     String phone, String customerType, int previousOrders) {
-        validateCsvField("customerID", customerID);
-        validateCsvField("name", name);
-        validateCsvField("email", email);
-        validateCsvField("phone", phone);
-
         if (!"Regular".equals(customerType)
                 && !"Student".equals(customerType)
                 && !"Corporate".equals(customerType)) {
@@ -49,15 +44,6 @@ public class customer {
         this.phone = phone;
         this.customerType = customerType;
         this.previousOrders = previousOrders;
-    }
-
-    private void validateCsvField(String fieldName, String value) {
-        if (value == null) {
-            throw new IllegalArgumentException(fieldName + " cannot be null");
-        }
-        if (value.contains(",")) {
-            throw new IllegalArgumentException(fieldName + " cannot contain commas");
-        }
     }
 
     // ── GETTERS ──────────────────────────────────────────────

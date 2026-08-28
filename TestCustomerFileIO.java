@@ -96,8 +96,9 @@ public class TestCustomerFileIO {
     // ── EP Invalid: comma in field would corrupt CSV format ───
     // TC reference: TC_FileIO_006
     @Test(expected = IllegalArgumentException.class)
-    public void testCustomerConstructor_commaInName_throwsException() {
-        new customer("C999", "Test, User", "t@t.com", "0100000000", "Regular", 0);
+    public void testAddCustomer_commaInName_throwsException() throws Exception {
+        customer c = new customer("C999", "Test, User", "t@t.com", "0100000000", "Regular", 0);
+        adder.addCustomer(c);
     }
 
     // ── BVA: previousOrders boundary — exactly 20 (no loyalty discount) ─

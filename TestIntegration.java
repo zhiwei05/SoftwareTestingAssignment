@@ -63,12 +63,16 @@ public class TestIntegration {
         new File(INT_TEST_FILE).delete();
     }
 
+    @Before
+    public void setUpIntegrationFile() {
+        new File(INT_TEST_FILE).delete();
+    }
+
     @Test
     public void testIntegration_addNewCustomer_thenReadBack() throws Exception {
         // This tests that writing a customer to file and reading it back
         // produces an identical customer object.
         //
-        new File(INT_TEST_FILE).delete();
         addNewCustomer adder = new addNewCustomer(INT_TEST_FILE);
         readCustomer reader = new readCustomer(INT_TEST_FILE);
 

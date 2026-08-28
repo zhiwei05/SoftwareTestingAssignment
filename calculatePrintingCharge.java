@@ -188,7 +188,7 @@ public class calculatePrintingCharge {
                 order.isExpressPrinting(),
                 order.getNumberOfPages(),
                 order.getNumberOfCopies());
-        double subtotal = baseCharge + optionalServiceCharge;
+        double subtotal = roundToTwoDecimals(baseCharge + optionalServiceCharge);
         boolean orderExceedsRM300 = subtotal > 300.0;
         boolean existingOver20Orders = order.getCustomer().getPreviousOrders() > 20;
 
@@ -197,7 +197,7 @@ public class calculatePrintingCharge {
                 subtotal,
                 orderExceedsRM300,
                 existingOver20Orders);
-        double discountAmount = Math.round((subtotal - finalCharge) * 100.0) / 100.0;
+        double discountAmount = roundToTwoDecimals(subtotal - finalCharge);
 
         order.setBaseCharge(baseCharge);
         order.setOptionalServiceCharge(optionalServiceCharge);
@@ -205,6 +205,10 @@ public class calculatePrintingCharge {
         order.setTotalCharge(finalCharge);
 
         return finalCharge;
+    }
+
+    private double roundToTwoDecimals(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
 
 }
