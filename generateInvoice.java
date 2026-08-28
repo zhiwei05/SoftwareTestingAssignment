@@ -48,16 +48,31 @@ public class generateInvoice {
     //
     //   Throw IllegalArgumentException if order is null.
     public String generate(printOrder order) {
-        // TODO [Member 4]: Validate that order is not null
+        if (order == null) {
+            throw new IllegalArgumentException("Order cannot be null");
+        }
 
-        // TODO [Member 4]: Build the invoice string using StringBuilder
-        //   Example structure:
-        //   sb.append("===== PRINTMASTER INVOICE =====\n");
-        //   sb.append("Customer: ").append(order.getCustomer().getName()).append("\n");
-        //   ... (continue for all required fields)
-
-        // TODO [Member 4]: Return the completed invoice string
-        return "";
+        customer c = order.getCustomer();
+        StringBuilder sb = new StringBuilder();
+        sb.append("===== PRINTMASTER INVOICE =====\n");
+        sb.append("Customer ID: ").append(c.getCustomerID()).append("\n");
+        sb.append("Customer Name: ").append(c.getName()).append("\n");
+        sb.append("Customer Phone: ").append(c.getPhone()).append("\n");
+        sb.append("Customer Email: ").append(c.getEmail()).append("\n");
+        sb.append("Print Type: ").append(order.getPrintType()).append("\n");
+        sb.append("Paper Size: ").append(order.getPaperSize()).append("\n");
+        sb.append("Printing Side: ").append(order.getPrintingSide()).append("\n");
+        sb.append("Pages: ").append(order.getNumberOfPages()).append("\n");
+        sb.append("Copies: ").append(order.getNumberOfCopies()).append("\n");
+        sb.append("Binding: ").append(order.getBindingOption()).append("\n");
+        sb.append("Lamination: ").append(order.isLamination() ? "Yes" : "No").append("\n");
+        sb.append("Express Printing: ").append(order.isExpressPrinting() ? "Yes" : "No").append("\n");
+        sb.append("Base Charge: RM ").append(String.format("%.2f", order.getBaseCharge())).append("\n");
+        sb.append("Optional Charges: RM ").append(String.format("%.2f", order.getOptionalServiceCharge())).append("\n");
+        sb.append("Discount: RM ").append(String.format("%.2f", order.getDiscountAmount())).append("\n");
+        sb.append("TOTAL: RM ").append(String.format("%.2f", order.getTotalCharge())).append("\n");
+        sb.append("===============================");
+        return sb.toString();
     }
 
 }

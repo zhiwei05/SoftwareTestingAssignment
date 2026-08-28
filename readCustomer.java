@@ -26,7 +26,7 @@ public class readCustomer {
     // ── CONSTRUCTOR ──────────────────────────────────────────
     // TODO [Member 1]: Accept filePath as a constructor parameter and assign it.
     public readCustomer(String filePath) {
-        // TODO [Member 1]: Assign filePath
+        this.filePath = filePath;
     }
 
     // ── METHOD: getCustomer ───────────────────────────────────
@@ -50,7 +50,29 @@ public class readCustomer {
     //     - Non-existent ID returns null
     //     - File not found throws IOException
     public customer getCustomer(String customerID) throws IOException {
-        // TODO [Member 1]: Implement file reading logic here
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+
+                String[] parts = line.split(",");
+                if (parts.length != 6) {
+                    continue;
+                }
+
+                if (parts[0].trim().equals(customerID)) {
+                    return new customer(
+                            parts[0].trim(),
+                            parts[1].trim(),
+                            parts[2].trim(),
+                            parts[3].trim(),
+                            parts[4].trim(),
+                            Integer.parseInt(parts[5].trim()));
+                }
+            }
+        }
         return null;
     }
 

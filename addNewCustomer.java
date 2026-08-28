@@ -23,7 +23,7 @@ public class addNewCustomer {
     // ── CONSTRUCTOR ──────────────────────────────────────────
     // TODO [Member 1]: Accept filePath and assign it.
     public addNewCustomer(String filePath) {
-        // TODO [Member 1]: Assign filePath
+        this.filePath = filePath;
     }
 
     // ── METHOD: addCustomer ───────────────────────────────────
@@ -45,7 +45,19 @@ public class addNewCustomer {
     //   Use a separate test file (e.g. "test_customers.txt") so you don't
     //   corrupt the real customer.txt during testing. Delete it after the test.
     public void addCustomer(customer c) throws IOException {
-        // TODO [Member 1]: Implement file append logic here
+        if (c == null) {
+            throw new IllegalArgumentException("Customer cannot be null");
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            writer.write(c.getCustomerID() + ","
+                    + c.getName() + ","
+                    + c.getEmail() + ","
+                    + c.getPhone() + ","
+                    + c.getCustomerType() + ","
+                    + c.getPreviousOrders());
+            writer.newLine();
+        }
     }
 
 }

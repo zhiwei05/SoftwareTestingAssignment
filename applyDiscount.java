@@ -57,16 +57,35 @@ public class applyDiscount {
     public double applyDiscount(String customerType, double subtotal,
                                  boolean orderExceedsRM300,
                                  boolean existingOver20Orders) {
-        // TODO [Member 2]: Validate inputs here
+        if (customerType == null) {
+            throw new IllegalArgumentException("Customer type cannot be null");
+        }
+        if (subtotal < 0) {
+            throw new IllegalArgumentException("Subtotal cannot be negative");
+        }
+        if (!"Regular".equals(customerType)
+                && !"Student".equals(customerType)
+                && !"Corporate".equals(customerType)) {
+            throw new IllegalArgumentException("Invalid customer type: " + customerType);
+        }
 
-        // TODO [Member 2]: Apply customer type discount (Student or Corporate)
+        double finalAmount = subtotal;
 
-        // TODO [Member 2]: Apply order value discount if orderExceedsRM300
+        if ("Student".equals(customerType)) {
+            finalAmount *= 0.90;
+        } else if ("Corporate".equals(customerType)) {
+            finalAmount *= 0.85;
+        }
 
-        // TODO [Member 2]: Apply loyalty discount if existingOver20Orders
+        if (orderExceedsRM300) {
+            finalAmount *= 0.95;
+        }
 
-        // TODO [Member 2]: Round to 2 decimal places and return
-        return 0.0;
+        if (existingOver20Orders) {
+            finalAmount *= 0.95;
+        }
+
+        return Math.round(finalAmount * 100.0) / 100.0;
     }
 
 }
