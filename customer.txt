@@ -1,7 +1,7 @@
 # FORMAT: customerID,name,email,phone,customerType,previousOrders
 # DO NOT DELETE THIS FILE — it must stay in the project root directory
 # Member 1 owns this file. Other members should not modify it.
-C001,Ali Hassan,ali@email.com,0123456789,Student,5
+C001,Yi Xiao,yixiao@test.com,012345,Student,7
 C002,Siti Binti Ahmad,siti@corp.com,0198765432,Corporate,25
 C003,John Doe,john@email.com,0111234567,Regular,3
 C004,Raj Kumar,raj@email.com,0167890123,Student,12
